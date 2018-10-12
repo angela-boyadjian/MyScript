@@ -7,7 +7,7 @@
 
 CC	=	gcc
 
-CFLAGS	+=	-W -Wall -Wextra -Werror
+CFLAGS	+=	-W -Wall -Wextra
 
 CFLAGS	+=	-I./includes
 
@@ -15,8 +15,11 @@ NAME	=	my_script
 
 DIR	=	srcs/
 
-SRCS	=	$(DIR)main.c	\
-			$(DIR)my_script.c
+SRCS	=	$(DIR)main.c		\
+			$(DIR)my_script.c	\
+			$(DIR)create_file.c	\
+			$(DIR)print.c		\
+			$(DIR)free.c
 
 OBJS	=	$(SRCS:.c=.o)
 

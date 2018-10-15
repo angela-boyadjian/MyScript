@@ -20,7 +20,7 @@ static void writing(int nb, FILE *file, bool is_seconds)
 void write_time(FILE *file)
 {
 	time_t time_struct = time(NULL);
-	struct tm tm = *localtime(&time_struct);
+	struct tm tm = *gmtime(&time_struct);
 
 	fprintf(file, "%d-%d-%d ", tm.tm_year + 1900,
 		tm.tm_mon + 1, tm.tm_mday);

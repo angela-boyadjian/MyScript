@@ -40,6 +40,11 @@ int my_script(info_t *);
 void print_file_content(info_t *);
 
 //
+// ─── WRITE ───────────────────────────────────────────────────────────────────────
+//
+void write_time(FILE *);
+
+//
 // ─── CLEAN ───────────────────────────────────────────────────────────────────────
 //
 void free_resources(info_t *);

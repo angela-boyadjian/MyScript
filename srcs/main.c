@@ -6,7 +6,6 @@
 */
 #include <stdlib.h>
 #include <string.h>
-#include <stdlib.h>
 
 #include "my_script.h"
 
@@ -15,13 +14,15 @@ static void init(info_t *info, char *file_name)
 	char *save = strdup("Script started, file is ");
 	info->file_name = strdup(file_name);
 
+	// info->shell = strdup("/bin/sh");
 	save = realloc(save, strlen(save) + strlen(file_name) + 1);
 	strcat(save, file_name);
 	info->line = save;
 }
 
-int main(int ac, char **av)
+int main(int ac, char **av, char **env)
 {
+	(void)env;
 	info_t *info = malloc(sizeof(info_t));
 
 	ac == 1 ? init(info, "typescript") : init(info, av[1]);

@@ -10,6 +10,8 @@
 
 #include <stdbool.h>
 #include <stdio.h>
+#include <sys/types.h>
+#include <unistd.h>
 
 #define SUCCESS 0
 #define FAILURE 84
@@ -17,9 +19,13 @@
 
 typedef struct info_s
 {
+	char *command;
 	char *file_name;
 	char *line;
+	char *shell;
 	FILE *file;
+	pid_t masterpid;
+	pid_t slavepid;
 	bool is_open;
 } info_t;
 

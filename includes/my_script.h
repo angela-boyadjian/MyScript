@@ -16,7 +16,8 @@
 #define SUCCESS 0
 #define FAILURE 84
 #define ERROR -1
-
+#define WRITE_END 1
+#define READ_END 0
 typedef struct info_s
 {
 	char *command;

@@ -1,0 +1,17 @@
+$ includes  Makefile  my_script  README.md  srcs	test  tests  typescript
+$ total 68
+drwxr-xr-x 7 lqtv7172 lqtv7172  4096 oct.  17 16:58 .
+drwxr-xr-x 7 lqtv7172 lqtv7172  4096 oct.  17 13:00 ..
+drwxr-xr-x 8 lqtv7172 lqtv7172  4096 oct.  17 16:58 .git
+-rw-r--r-- 1 lqtv7172 lqtv7172    33 oct.  12 16:22 .gitignore
+drwxr-xr-x 2 lqtv7172 lqtv7172  4096 oct.  12 15:29 includes
+-rw-r--r-- 1 lqtv7172 lqtv7172   801 oct.  12 16:33 Makefile
+-rwxr-xr-x 1 lqtv7172 lqtv7172 18472 oct.  17 16:58 my_script
+-rw-r--r-- 1 lqtv7172 lqtv7172    54 oct.  12 14:36 README.md
+drwxr-xr-x 2 lqtv7172 lqtv7172  4096 oct.  17 16:58 srcs
+-rw-r--r-- 1 lqtv7172 lqtv7172    75 oct.  17 16:58 test
+drwxr-xr-x 2 lqtv7172 lqtv7172  4096 oct.  12 14:37 tests
+-rw-r--r-- 1 lqtv7172 lqtv7172    73 oct.  17 16:25 typescript
+drwxr-xr-x 2 lqtv7172 lqtv7172  4096 oct.  15 17:44 .vscode
+$ /home/lqtv7172/Documents/MyScript
+$ 

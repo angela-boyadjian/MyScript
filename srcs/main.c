@@ -4,30 +4,179 @@
 ** File description:
 ** main
 */
+#define _XOPEN_SOURCE 600
+#define _DEFAULT_SOURCE
 #include <stdlib.h>
-#include <string.h>
+#include <fcntl.h>
+#include <sys/ioctl.h>
+#include <errno.h>
+#include <unistd.h>
+#include <stdio.h>
+#include <termios.h>
+#include<string.h>
 
-#include "my_script.h"
+// #include "my_script.h"
 
-static void init(info_t *info, char *file_name)
+// static void init(info_t *info, char *file_name)
+// {
+// 	char *save = strdup("Script started, file is ");
+// 	info->file_name = strdup(file_name);
+
+// 	save = realloc(save, strlen(save) + strlen(file_name) + 1);
+// 	strcat(save, file_name);
+// 	info->line = save;
+// }
+
+// int main(int ac, char **av, char **env)
+// {
+// 	(void)env;
+// 	info_t *info = malloc(sizeof(info_t));
+
+// 	ac == 1 ? init(info, "typescript") : init(info, av[1]);
+// 	if (create_file(info) == FAILURE || my_script(info) == FAILURE)
+// 			return (FAILURE);
+// 	free_resources(info);
+// 	return (SUCCESS);
+// }
+
+int main(int ac, char *av[])
 {
-	char *save = strdup("Script started, file is ");
-	info->file_name = strdup(file_name);
+	int fdm, fds;
+	int fd = open("test", O_RDWR | O_TRUNC);
 
-	// info->shell = strdup("/bin/sh");
-	save = realloc(save, strlen(save) + strlen(file_name) + 1);
-	strcat(save, file_name);
-	info->line = save;
-}
+	int rc;
+	char input[150];
 
-int main(int ac, char **av, char **env)
-{
-	(void)env;
-	info_t *info = malloc(sizeof(info_t));
+	// Check arguments
+	if (ac <= 1) {
+		fprintf(stderr, "Usage: %s program_name [parameters]\n", av[0]);
+		exit(1);
+	}
 
-	ac == 1 ? init(info, "typescript") : init(info, av[1]);
-	if (create_file(info) == FAILURE || my_script(info) == FAILURE)
-			return (FAILURE);
-	free_resources(info);
-	return (SUCCESS);
-}
+	fdm = posix_openpt(O_RDWR);
+	if (fdm < 0) {
+		fprintf(stderr, "Error %d on posix_openpt()\n", errno);
+		return 1;
+	}
+
+	rc = grantpt(fdm);
+	if (rc != 0) {
+		fprintf(stderr, "Error %d on grantpt()\n", errno);
+		return 1;
+	}
+
+	rc = unlockpt(fdm);
+	if (rc != 0) {
+		fprintf(stderr, "Error %d on unlockpt()\n", errno);
+		return 1;
+	}
+
+	// Open the slave side ot the PTY
+	fds = open(ptsname(fdm), O_RDWR);
+
+	// Create the child process
+	if (fork()) {
+		fd_set fd_in;
+
+	// FATHER
+
+	// Close the slave side of the PTY
+		close(fds);
+
+		while (1) {
+			// Wait for data from standard input and master side of PTY
+			FD_ZERO(&fd_in);
+			FD_SET(0, &fd_in);
+			FD_SET(fdm, &fd_in);
+
+			rc = select(fdm + 1, &fd_in, NULL, NULL, NULL);
+			switch(rc) {
+				case -1 :
+					fprintf(stderr, "Error %d on select()\n", errno);
+					exit(1);
+				default : {
+					// If data on standard input
+					if (FD_ISSET(0, &fd_in)) {
+						rc = read(0, input, sizeof(input));
+						if (rc > 0) {
+							// Send dta on the master side of PTY
+							write(fdm, input, rc);
+						} else {
+							if (rc < 0) {
+								fprintf(stderr, "Error %d on read standard input\n", errno);
+								exit(1);
+							}
+						}
+					}
+
+				// If data on master side of PTY
+					if (FD_ISSET(fdm, &fd_in)) {
+						rc = read(fdm, input, sizeof(input));
+						if (rc > 0) {
+							// Send data on standard output
+							write(fd, input, rc); // Write output to file
+							write(1, input, rc);
+						} else {
+							if (rc < 0) {
+								fprintf(stderr, "Error %d on read master PTY\n", errno);
+								exit(1);
+							}
+						}
+					}
+				}
+			} // End switch
+		} // End while
+	} else {
+		struct termios slave_orig_term_settings; // Saved terminal settings
+		struct termios new_term_settings; // Current terminal settings
+
+		// CHILD
+
+		// Close the master side of the PTY
+		close(fdm);
+
+		// Save the defaults parameters of the slave side of the PTY
+		rc = tcgetattr(fds, &slave_orig_term_settings);
+
+		// Set RAW mode on slave side of PTY
+		new_term_settings = slave_orig_term_settings;
+		cfmakeraw (&new_term_settings);
+		tcsetattr (fds, TCSANOW, &new_term_settings);
+
+		// The slave side of the PTY becomes the standard input and outputs of the child process
+		close(0); // Close standard input (current terminal)
+		close(1); // Close standard output (current terminal)
+		close(2); // Close standard error (current terminal)
+
+		dup(fds); // PTY becomes standard input (0)
+		dup(fds); // PTY becomes standard output (1)
+		dup(fds); // PTY becomes standard error (2)
+
+		// Now the original file descriptor is useless
+		close(fds);
+
+		// Make the current process a new session leader
+		setsid();
+
+		// As the child is a session leader, set the controlling terminal to be the slave side of the PTY
+		// (Mandatory for programs like the shell to make them manage correctly their outputs)
+		ioctl(0, TIOCSCTTY, 1);
+
+	// Execution of the program
+		{
+		char **child_av;
+		int i;
+
+		// Build the command line
+		child_av = (char **)malloc(ac * sizeof(char *));
+		for (i = 1; i < ac; i ++) {
+			child_av[i - 1] = strdup(av[i]);
+		}
+		child_av[i - 1] = NULL;
+		rc = execvp(child_av[0], child_av);
+		}
+		// if Error...
+		return 1;
+	}
+	return 0;
+} // main

@@ -34,17 +34,17 @@ int init_master(info_t *info)
 	info->fd_master = posix_openpt(O_RDWR);
 	if (info->fd_master < 0) {
 		fprintf(stderr, "Error %d on posix_openpt()\n", errno);
-		return 1;
+		return (FAILURE);
 	}
 	info->rc = grantpt(info->fd_master);
-	if (info->rc != 0) {
+	if (info->rc != SUCCESS) {
 		fprintf(stderr, "Error %d on grantpt()\n", errno);
-		return 1;
+		return FAILURE;
 	}
 	info->rc = unlockpt(info->fd_master);
-	if (info->rc != 0) {
+	if (info->rc != SUCCESS) {
 		fprintf(stderr, "Error %d on unlockpt()\n", errno);
-		return 1;
+		return FAILURE;
 	}
-	return (0);
+	return (SUCCESS);
 }

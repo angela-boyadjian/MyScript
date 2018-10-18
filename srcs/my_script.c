@@ -19,6 +19,31 @@
 
 #include "my_script.h"
 
+static void set_raw_mode(info_t *info)
+{
+	struct termios slave_orig_term_settings;
+	struct termios new_term_settings;
+
+	close(info->fd_master);
+	info->rc = tcgetattr(info->fd_slave, &slave_orig_term_settings);
+	new_term_settings = slave_orig_term_settings;
+	cfmakeraw (&new_term_settings);
+	tcsetattr (info->fd_slave, TCSANOW, &new_term_settings);
+}
+
+static void update_streams(info_t *info)
+{
+	close(0);
+	close(1);
+	close(2);
+
+	dup(info->fd_slave);
+	dup(info->fd_slave);
+	dup(info->fd_slave);
+
+	close(info->fd_slave);
+}
+
 int my_script(info_t *info)
 {
 	init_master(info);

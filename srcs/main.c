@@ -14,8 +14,12 @@
 
 static int create_file(info_t *info)
 {
-	int fd = open(info->file_name, O_RDWR | O_TRUNC);
+	int fd;
 
+	if (check[A].on || check[A_ALT].on)
+		fd = open(info->file_name, O_RDWR | O_APPEND);
+	else
+		fd = open(info->file_name, O_RDWR | O_TRUNC);
 	info->fd = fd;
 	info->is_open = true;
 	write_status_to_stdout(info, true);
@@ -26,7 +30,9 @@ int main(int ac, char *av[])
 {
 	info_t *info = malloc(sizeof(info_t));
 
-	ac == 1 ? init_struct(info, "typescript") : init_struct(info, av[1]);
+	if (errors(ac, av) == FAILURE)
+		return (FAILURE);
+	init_struct(info, ac, av);
 	if (create_file(info) == FAILURE || my_script(info) == FAILURE)
 			return (FAILURE);
 	free_resources(info);

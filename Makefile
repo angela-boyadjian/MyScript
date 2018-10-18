@@ -20,6 +20,9 @@ SRCS	=	$(DIR)main.c			\
 			$(DIR)write.c			\
 			$(DIR)init.c			\
 			$(DIR)handle_data.c		\
+			$(DIR)parsing.c		\
+			$(DIR)options.c		\
+			$(DIR)error.c		\
 			$(DIR)free.c
 
 OBJS	=	$(SRCS:.c=.o)

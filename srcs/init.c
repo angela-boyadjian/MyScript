@@ -16,10 +16,21 @@
 
 #include "my_script.h"
 
-void init_struct(info_t *info, char *file_name)
+static void get_name(info_t *info, int ac, char **av)
 {
-	info->file_name = strdup(file_name);
+	for (int i = 1; i < ac; ++i) {
+		if (av[i][0] != '-') {
+			info->file_name = strdup(av[i]);
+			return;
+		}
+	}
+	info->file_name = strdup("typescript");
+}
 
+void init_struct(info_t *info, int ac, char **av)
+{
+	ac == 1 ? info->file_name = strdup("typescript") :
+		get_name(info, ac, av);
 	// info->shell = getenv("SHELL");
 	// if (!info->shell)
 	info->shell = "/bin/bash";

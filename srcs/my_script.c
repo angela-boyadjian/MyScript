@@ -20,6 +20,14 @@
 
 #include "my_script.h"
 
+options_t check[NB_OPTIONS] = {
+	{"h", 0, &option_h},
+	{"a", 0, &option_a},
+	{"-append", 0, &option_a},
+	{"q", 0, &option_q},
+	{"V", 0, &option_v}
+};
+
 static void set_raw_mode(info_t *info)
 {
 	struct termios slave_orig_term_settings;
@@ -47,6 +55,10 @@ static void update_streams(info_t *info)
 
 int my_script(info_t *info)
 {
+	for (int j = 0; j < NB_OPTIONS; ++j) {
+		if (check[j].ptr && check[j].on == 1)
+			(check[j].ptr)(info);
+	}
 	write_status_to_file(info, true);
 	if (init_master(info) == FAILURE)
 		return (FAILURE);

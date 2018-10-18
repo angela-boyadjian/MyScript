@@ -46,7 +46,8 @@ static void update_streams(info_t *info)
 
 int my_script(info_t *info)
 {
-	init_master(info);
+	if (init_master(info) == FAILURE)
+		return (FAILURE);
 	info->fd_slave = open(ptsname(info->fd_master), O_RDWR);
 
 	if (fork()) {

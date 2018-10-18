@@ -19,6 +19,8 @@
 
 #include "my_script.h"
 
+static const int SIZE = 150;
+
 void send_data_to_master(info_t *info, fd_set *fd_in, char *input)
 {
 	if (FD_ISSET(0, fd_in)) {
@@ -49,7 +51,7 @@ void send_data_to_stdout(info_t *info, fd_set *fd_in, char *input, int fd)
 void wait_for_data(info_t *info)
 {
 	fd_set fd_in;
-	char input[150];
+	char input[SIZE];
 	int fd = open(info->file_name, O_RDWR | O_TRUNC);
 
 	while (1) {
@@ -58,14 +60,12 @@ void wait_for_data(info_t *info)
 		FD_SET(info->fd_master, &fd_in);
 
 		info->rc = select(info->fd_master + 1, &fd_in, NULL, NULL, NULL);
-		switch(info->rc) {
-			case -1 :
+		if (info->rc == ERROR) {
 				fprintf(stderr, "Error %d on select()\n", errno);
-				exit(1);
-			default : {
-				send_data_to_master(info, &fd_in, input);
-				send_data_to_stdout(info, &fd_in, input, fd);
-			}
+				exit(FAILURE);
+		} else {
+			send_data_to_master(info, &fd_in, input);
+			send_data_to_stdout(info, &fd_in, input, fd);
 		}
 	}
 	close(fd);

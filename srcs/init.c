@@ -18,15 +18,11 @@
 
 void init_struct(info_t *info, char *file_name)
 {
-	char *save = strdup("Script started, file is ");
 	info->file_name = strdup(file_name);
 
-	info->shell = getenv("SHELL");
-	if (!info->shell)
-		info->shell = "/bin/sh";
-	save = realloc(save, strlen(save) + strlen(file_name) + 1);
-	strcat(save, file_name);
-	info->line = save;
+	// info->shell = getenv("SHELL");
+	// if (!info->shell)
+	info->shell = "/bin/bash";
 }
 
 int init_master(info_t *info)

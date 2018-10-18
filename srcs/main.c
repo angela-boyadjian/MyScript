@@ -4,9 +4,23 @@
 ** File description:
 ** main
 */
+
 #include <stdlib.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 
 #include "my_script.h"
+
+static int create_file(info_t *info)
+{
+	int fd = open(info->file_name, O_RDWR | O_TRUNC);
+
+	info->fd = fd;
+	info->is_open = true;
+	write_status_to_stdout(info, true);
+	return (SUCCESS);
+}
 
 int main(int ac, char *av[])
 {

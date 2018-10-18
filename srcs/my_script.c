@@ -14,6 +14,7 @@
 #include <errno.h>
 #include <unistd.h>
 #include <stdio.h>
+#include <sys/time.h>
 #include <termios.h>
 #include <string.h>
 
@@ -46,6 +47,7 @@ static void update_streams(info_t *info)
 
 int my_script(info_t *info)
 {
+	write_status_to_file(info, true);
 	if (init_master(info) == FAILURE)
 		return (FAILURE);
 	info->fd_slave = open(ptsname(info->fd_master), O_RDWR);
@@ -58,10 +60,8 @@ int my_script(info_t *info)
 		update_streams(info);
 		setsid();
 		ioctl(0, TIOCSCTTY, 1);
-		info->rc = execl(info->shell, info->shell, NULL, NULL);
+		info->rc = execlp(info->shell, info->shell, NULL, NULL);
 		return (FAILURE);
 	}
-	fprintf(info->file, "Script done on ");
-	write_time(info->file);
 	return (SUCCESS);
 }

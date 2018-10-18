@@ -20,42 +20,32 @@
 
 typedef struct info_s
 {
-	char *command;
 	char *file_name;
 	char *line;
 	char *shell;
 	FILE *file;
-	int rc;
+	int fd;
+	ssize_t rc;
 	int fd_master;
 	int fd_slave;
 	bool is_open;
+	struct timeval timeval;
 } info_t;
 
 //
 // ─── INIT ───────────────────────────────────────────────────────────────────────
 //
 int get_args(int, char **, info_t *);
-int create_file(info_t *info);
-int init_master(info_t *info);
+int init_master(info_t *);
 void init_struct(info_t *, char *);
 
 //
 // ─── MYSCRIPT ───────────────────────────────────────────────────────────────────
 //
 int my_script(info_t *);
-void send_data_to_master(info_t *info, fd_set *fd_in, char *input);
-void send_data_to_stdout(info_t *info, fd_set *fd_in, char *input, int fd);
-void wait_for_data(info_t *info);
-
-//
-// ─── PRINT ──────────────────────────────────────────────────────────────────────
-//
-void print_file_content(info_t *);
-
-//
-// ─── WRITE ───────────────────────────────────────────────────────────────────────
-//
-void write_time(FILE *);
+void wait_for_data(info_t *);
+void write_status_to_file(info_t *, bool);
+void write_status_to_stdout(info_t *, bool);
 
 //
 // ─── CLEAN ───────────────────────────────────────────────────────────────────────

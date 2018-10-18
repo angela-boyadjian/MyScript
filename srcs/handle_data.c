@@ -9,7 +9,6 @@
 #define _DEFAULT_SOURCE
 
 #include <stdlib.h>
-#include <fcntl.h>
 #include <sys/ioctl.h>
 #include <errno.h>
 #include <unistd.h>
@@ -21,7 +20,7 @@
 
 static const int SIZE = 150;
 
-void send_data_to_master(info_t *info, fd_set *fd_in, char *input)
+static void send_data_to_master(info_t *info, fd_set *fd_in, char *input)
 {
 	if (FD_ISSET(0, fd_in)) {
 		info->rc = read(0, input, sizeof(input));
@@ -34,12 +33,11 @@ void send_data_to_master(info_t *info, fd_set *fd_in, char *input)
 	}
 }
 
-void send_data_to_stdout(info_t *info, fd_set *fd_in, char *input, int fd)
+static void send_data_to_stdout(info_t *info, fd_set *fd_in, char *input)
 {
 	if (FD_ISSET(info->fd_master, fd_in)) {
 		info->rc = read(info->fd_master, input, sizeof(input));
 		if (info->rc > 0) {
-			write(fd, input, info->rc);
 			write(1, input, info->rc);
 		} else {
 			fprintf(stderr, "Error %d on read master PTY\n", errno);
@@ -48,11 +46,19 @@ void send_data_to_stdout(info_t *info, fd_set *fd_in, char *input, int fd)
 	}
 }
 
+static void check_exit(info_t *info, char *input)
+{
+	if (strncmp(input, "exit", 4) == SUCCESS) {
+		write_status_to_file(info, false);
+		write_status_to_stdout(info, false);
+		exit(SUCCESS);
+	}
+}
+
 void wait_for_data(info_t *info)
 {
 	fd_set fd_in;
 	char input[SIZE];
-	int fd = open(info->file_name, O_RDWR | O_TRUNC);
 
 	while (1) {
 		FD_ZERO(&fd_in);
@@ -65,8 +71,9 @@ void wait_for_data(info_t *info)
 				exit(FAILURE);
 		} else {
 			send_data_to_master(info, &fd_in, input);
-			send_data_to_stdout(info, &fd_in, input, fd);
+			send_data_to_stdout(info, &fd_in, input);
+			write(info->fd, input, info->rc);
+			check_exit(info, input);
 		}
 	}
-	close(fd);
 }

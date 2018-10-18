@@ -17,7 +17,7 @@ DIR	=	srcs/
 
 SRCS	=	$(DIR)main.c			\
 			$(DIR)my_script.c		\
-			$(DIR)create_file.c		\
+			$(DIR)write.c			\
 			$(DIR)init.c			\
 			$(DIR)handle_data.c		\
 			$(DIR)free.c

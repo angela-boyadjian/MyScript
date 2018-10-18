@@ -1,17 +1,11 @@
-$ includes  Makefile  my_script  README.md  srcs	test  tests  typescript
-$ total 68
-drwxr-xr-x 7 lqtv7172 lqtv7172  4096 oct.  17 16:58 .
-drwxr-xr-x 7 lqtv7172 lqtv7172  4096 oct.  17 13:00 ..
-drwxr-xr-x 8 lqtv7172 lqtv7172  4096 oct.  17 16:58 .git
--rw-r--r-- 1 lqtv7172 lqtv7172    33 oct.  12 16:22 .gitignore
-drwxr-xr-x 2 lqtv7172 lqtv7172  4096 oct.  12 15:29 includes
--rw-r--r-- 1 lqtv7172 lqtv7172   801 oct.  12 16:33 Makefile
--rwxr-xr-x 1 lqtv7172 lqtv7172 18472 oct.  17 16:58 my_script
--rw-r--r-- 1 lqtv7172 lqtv7172    54 oct.  12 14:36 README.md
-drwxr-xr-x 2 lqtv7172 lqtv7172  4096 oct.  17 16:58 srcs
--rw-r--r-- 1 lqtv7172 lqtv7172    75 oct.  17 16:58 test
-drwxr-xr-x 2 lqtv7172 lqtv7172  4096 oct.  12 14:37 tests
--rw-r--r-- 1 lqtv7172 lqtv7172    73 oct.  17 16:25 typescript
-drwxr-xr-x 2 lqtv7172 lqtv7172  4096 oct.  15 17:44 .vscode
-$ /home/lqtv7172/Documents/MyScript
-$ 
+[1m[7m%[27m[1m[0m                                                                                ]2;lqtv7172@yd-5CG80450PC: ~/Documents/MyScript]1;..ents/MyScript[0m[27m[24m[J[01;32m➜  [36mMyScript[00m [01;34mgit:([31mmaster[34m) [33m✗[00m [K[?1h=[?2004hlls[?1l>[?2004l
+]2;ls --color=tty]1;ls[0m[01;34mincludes[0m  Makefile  [01;32mmy_script[0m  README.md  [01;34msrcs[0m  test  [01;34mtests[0m  typescript
+[1m[7m%[27m[1m[0m                                                                                ]2;lqtv7172@yd-5CG80450PC: ~/Documents/MyScript]1;..ents/MyScript[0m[27m[24m[J[01;32m➜  [36mMyScript[00m [01;34mgit:([31mmaster[34m) [33m✗[00m [K[?1h=[?2004hppwd[?1l>[?2004l
+]2;pwd]1;pwd/home/lqtv7172/Documents/MyScript
+[1m[7m%[27m[1m[0m                                                                                ]2;lqtv7172@yd-5CG80450PC: ~/Documents/MyScript]1;..ents/MyScript[0m[27m[24m[J[01;32m➜  [36mMyScript[00m [01;34mgit:([31mmaster[34m) [33m✗[00m [K[?1h=[?2004hlls[?1l>[?2004l
+]2;ls --color=tty]1;ls[0m[01;34mincludes[0m  Makefile  [01;32mmy_script[0m  README.md  [01;34msrcs[0m  test  [01;34mtests[0m  typescript
+[1m[7m%[27m[1m[0m                                                                                ]2;lqtv7172@yd-5CG80450PC: ~/Documents/MyScript]1;..ents/MyScript[0m[27m[24m[J[01;32m➜  [36mMyScript[00m [01;34mgit:([31mmaster[34m) [33m✗[00m [K[?1h=[?2004hlls[?1l>[?2004l
+]2;ls --color=tty]1;ls[0m[01;34mincludes[0m  Makefile  [01;32mmy_script[0m  README.md  [01;34msrcs[0m  test  [01;34mtests[0m  typescript
+[1m[7m%[27m[1m[0m                                                                                ]2;lqtv7172@yd-5CG80450PC: ~/Documents/MyScript]1;..ents/MyScript[0m[27m[24m[J[01;32m➜  [36mMyScript[00m [01;34mgit:([31mmaster[34m) [33m✗[00m [K[?1h=[?2004hlls[?1l>[?2004l
+]2;ls --color=tty]1;ls[0m[01;34mincludes[0m  Makefile  [01;32mmy_script[0m  README.md  [01;34msrcs[0m  test  [01;34mtests[0m  typescript
+[1m[7m%[27m[1m[0m                                                                                ]2;lqtv7172@yd-5CG80450PC: ~/Documents/MyScript]1;..ents/MyScript[0m[27m[24m[J[01;32m➜  [36mMyScript[00m [01;34mgit:([31mmaster[34m) [33m✗[00m [K[?1h=[?2004h

@@ -18,7 +18,7 @@ DIR	=	srcs/
 SRCS	=	$(DIR)main.c		\
 			$(DIR)my_script.c	\
 			$(DIR)create_file.c	\
-			$(DIR)print.c		\
+			$(DIR)init.c		\
 			$(DIR)free.c
 
 OBJS	=	$(SRCS:.c=.o)

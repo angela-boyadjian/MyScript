@@ -16,8 +16,7 @@
 #define SUCCESS 0
 #define FAILURE 84
 #define ERROR -1
-#define WRITE_END 1
-#define READ_END 0
+
 typedef struct info_s
 {
 	char *command;
@@ -25,8 +24,9 @@ typedef struct info_s
 	char *line;
 	char *shell;
 	FILE *file;
-	pid_t masterpid;
-	pid_t slavepid;
+	int rc;
+	int fd_master;
+	int fd_slave;
 	bool is_open;
 } info_t;
 
@@ -35,11 +35,18 @@ typedef struct info_s
 //
 int get_args(int, char **, info_t *);
 int create_file(info_t *info);
+int init_master(info_t *info);
+void init_struct(info_t *, char *);
 
 //
 // ─── MYSCRIPT ───────────────────────────────────────────────────────────────────
 //
 int my_script(info_t *);
+void send_data_to_master(info_t *info, fd_set *fd_in, char *input);
+void send_data_to_stdout(info_t *info, fd_set *fd_in, char *input, int fd);
+void wait_for_data(info_t *info);
+void set_raw_mode(info_t *info);
+void update_streams(info_t *info);
 
 //
 // ─── PRINT ──────────────────────────────────────────────────────────────────────

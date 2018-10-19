@@ -15,10 +15,14 @@ NAME	=	my_script
 
 DIR	=	srcs/
 
-SRCS	=	$(DIR)main.c		\
-			$(DIR)my_script.c	\
-			$(DIR)create_file.c	\
-			$(DIR)print.c		\
+SRCS	=	$(DIR)main.c			\
+			$(DIR)my_script.c		\
+			$(DIR)write.c			\
+			$(DIR)init.c			\
+			$(DIR)handle_data.c		\
+			$(DIR)parsing.c		\
+			$(DIR)options.c		\
+			$(DIR)error.c		\
 			$(DIR)free.c
 
 OBJS	=	$(SRCS:.c=.o)

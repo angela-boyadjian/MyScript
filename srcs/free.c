@@ -15,6 +15,7 @@ void free_resources(info_t *info)
 		free(info->file_name);
 	if (info->line)
 		free(info->line);
+	if (info->is_open)
+		fclose(info->file);
 	free (info);
-
 }

@@ -19,7 +19,7 @@ static int create_file(info_t *info)
 	if (check[A].on || check[A_ALT].on)
 		fd = open(info->file_name, O_RDWR | O_APPEND);
 	else
-		fd = open(info->file_name, O_RDWR | O_TRUNC);
+		fd = open(info->file_name, O_RDWR | O_TRUNC | O_CREAT, 0644);
 	info->fd = fd;
 	info->is_open = true;
 	write_status_to_stdout(info, true);

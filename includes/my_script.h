@@ -55,7 +55,6 @@ typedef struct info_s
 typedef struct options_s {
 	char *flag;
 	int on;
-	void (*ptr)(void);
 } options_t;
 
 //
@@ -75,11 +74,12 @@ void write_status_to_file(info_t *, bool);
 void write_status_to_stdout(info_t *, bool);
 void option_h(void);
 void option_v(void);
-int check_flags(char **av, int ac);
+int check_flags(char **, int);
 
-
-int errors(int ac, char **av);
-
+//
+// ─── ERROR HANDLING ───────────────────────────────────────────────────────────────────────
+//
+int errors(int, char **);
 
 //
 // ─── CLEAN ───────────────────────────────────────────────────────────────────────

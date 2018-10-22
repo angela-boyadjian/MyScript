@@ -34,9 +34,9 @@ int main(int ac, char *av[])
 	if (errors(ac, av) == FAILURE)
 		return (FAILURE);
 	if (check[H].on || check[H_ALT].on)
-			(check[H].ptr)();
+		option_h();
 	else if (check[V].on || check[V_ALT].on)
-			(check[V].ptr)();
+		option_v();
 	init_struct(info, ac, av);
 	if (create_file(info) == FAILURE || my_script(info) == FAILURE)
 			return (FAILURE);

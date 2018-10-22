@@ -7,6 +7,9 @@
 
 #include "my_script.h"
 
+//
+// ─── ERROR HANDLING ───────────────────────────────────────────────────────────────────
+//
 int errors(int ac, char **av)
 {
 	if (check_flags(av, ac) == FAILURE && av[1][1]) {

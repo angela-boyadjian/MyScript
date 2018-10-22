@@ -28,6 +28,7 @@ static void send_data_to_master(info_t *info, fd_set *fd_in, char *input)
 			write(info->fd_master, input, info->rc);
 		} else {
 			fprintf(stderr, "Error %d on read standard input\n", errno);
+			free_resources(info);
 			exit(FAILURE);
 		}
 	}
@@ -41,11 +42,15 @@ static void send_data_to_stdout(info_t *info, fd_set *fd_in, char *input)
 			write(1, input, info->rc);
 		} else {
 			fprintf(stderr, "Error %d on read master PTY\n", errno);
+			free_resources(info);
 			exit(FAILURE);
 		}
 	}
 }
 
+//
+// ─── HANDLE IF INPUT IS EXIT ───────────────────────────────────────────────────────────────────────
+//
 static void check_exit(info_t *info, char *input)
 {
 	if (strncmp(input, "exit", 4) == SUCCESS) {
@@ -56,16 +61,18 @@ static void check_exit(info_t *info, char *input)
 	}
 }
 
+//
+// ─── WAIT FOR THE STANDARD INPUT AND MASTER SIDE OF PTY ───────────────────────────────────────────────────────────────────
+//
 void wait_for_data(info_t *info)
 {
 	fd_set fd_in;
 	char input[SIZE];
 
-	while (1) {
+	while (true) {
 		FD_ZERO(&fd_in);
 		FD_SET(0, &fd_in);
 		FD_SET(info->fd_master, &fd_in);
-
 		info->rc = select(info->fd_master + 1, &fd_in, NULL, NULL, NULL);
 		if (info->rc == ERROR) {
 				fprintf(stderr, "Error %d on select()\n", errno);

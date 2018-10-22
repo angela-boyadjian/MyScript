@@ -9,6 +9,9 @@
 
 #include "my_script.h"
 
+//
+// ─── HANDLE RESOURCES ───────────────────────────────────────────────────────────────────
+//
 void free_resources(info_t *info)
 {
 	if (info->file_name)
@@ -17,5 +20,7 @@ void free_resources(info_t *info)
 		free(info->line);
 	if (info->is_open)
 		fclose(info->file);
+	if (info->command)
+		free(info->command);
 	free (info);
 }

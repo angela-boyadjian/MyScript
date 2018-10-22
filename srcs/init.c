@@ -27,21 +27,26 @@ static void get_name(info_t *info, int ac, char **av)
 	info->file_name = strdup("typescript");
 }
 
+static void get_name_cmd(info_t *info, char **av, int i)
+{
+	if (av[i + 2])
+		info->file_name = strdup(av[i + 2]);
+	else
+		info->file_name = strdup("typescript");
+}
+
 static void get_cmd(info_t * info, int ac, char **av)
 {
 	for (int i = 1; i < ac; ++i) {
 		if (av[i + 1] && (strcmp(av[i], "-c") ||
 			strcmp(av[i], "--command"))) {
-				info->command = strdup(av[i + 1]);
-				if (av[i + 2])
-					info->file_name = strdup(av[i + 2]);
-				else
-					info->file_name = strdup("typescript");
+			info->command = strdup(av[i + 1]);
+			get_name_cmd(info, av, i);
+			return;
 		} else {
 			fprintf(stderr, "Not enough arguments\n");
 			exit(FAILURE);
 		}
-		return;
 	}
 }
 

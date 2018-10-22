@@ -8,7 +8,9 @@
 
 #include "my_script.h"
 
-//Check if flag is valid and set on 1 if so.
+//
+// ─── CHECK IF FLAG IS VALID AND SET ON 1 IF SO ───────────────────────────────────────────────────────────────────────
+//
 static int validate_flags(char *av)
 {
 	int j;
@@ -26,7 +28,9 @@ static int validate_flags(char *av)
 	return (SUCCESS);
 }
 
-//Checks if there are flags.
+//
+// ─── CHECK IF THERE ARE FLAGS ───────────────────────────────────────────────────────────────────────
+//
 int check_flags(char **av, int ac)
 {
 	for (int i = 1; i < ac; ++i) {

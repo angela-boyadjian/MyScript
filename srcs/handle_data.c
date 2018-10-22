@@ -50,7 +50,8 @@ static void check_exit(info_t *info, char *input)
 {
 	if (strncmp(input, "exit", 4) == SUCCESS) {
 		write_status_to_file(info, false);
-		write_status_to_stdout(info, false);
+		if (!check[Q].on && !check[Q_ALT].on)
+			write_status_to_stdout(info, false);
 		exit(SUCCESS);
 	}
 }

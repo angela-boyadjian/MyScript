@@ -22,10 +22,15 @@
 
 options_t check[NB_OPTIONS] = {
 	{"h", 0, &option_h},
-	{"a", 0, &option_a},
-	{"-append", 0, &option_a},
-	{"q", 0, &option_q},
-	{"V", 0, &option_v}
+	{"-help", 0, &option_h},
+	{"a", 0, NULL},
+	{"-append", 0, NULL},
+	{"q", 0, NULL},
+	{"-quiet", 0, NULL},
+	{"V", 0, &option_v},
+	{"-version", 0, &option_v},
+	{"c", 0, NULL},
+	{"-command", 0, NULL}
 };
 
 static void set_raw_mode(info_t *info)
@@ -55,10 +60,6 @@ static void update_streams(info_t *info)
 
 int my_script(info_t *info)
 {
-	for (int j = 0; j < NB_OPTIONS; ++j) {
-		if (check[j].ptr && check[j].on == 1)
-			(check[j].ptr)(info);
-	}
 	write_status_to_file(info, true);
 	if (init_master(info) == FAILURE)
 		return (FAILURE);
@@ -72,7 +73,10 @@ int my_script(info_t *info)
 		update_streams(info);
 		setsid();
 		ioctl(0, TIOCSCTTY, 1);
-		info->rc = execlp(info->shell, info->shell, NULL, NULL);
+		if (check[C].on || check[C_ALT].on)
+			info->rc = execl(info->shell, info->shell, "-c", info->command, NULL);
+		else
+			info->rc = execlp(info->shell, info->shell, NULL, NULL);
 		return (FAILURE);
 	}
 	return (SUCCESS);

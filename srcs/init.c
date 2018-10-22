@@ -27,13 +27,35 @@ static void get_name(info_t *info, int ac, char **av)
 	info->file_name = strdup("typescript");
 }
 
+static void get_cmd(info_t * info, int ac, char **av)
+{
+	for (int i = 1; i < ac; ++i) {
+		if (av[i + 1] && (strcmp(av[i], "-c") ||
+			strcmp(av[i], "--command"))) {
+				info->command = strdup(av[i + 1]);
+				if (av[i + 2])
+					info->file_name = strdup(av[i + 2]);
+				else
+					info->file_name = strdup("typescript");
+		} else {
+			fprintf(stderr, "Not enough arguments\n");
+			exit(FAILURE);
+		}
+		return;
+	}
+}
+
 void init_struct(info_t *info, int ac, char **av)
 {
-	ac == 1 ? info->file_name = strdup("typescript") :
-		get_name(info, ac, av);
-	// info->shell = getenv("SHELL");
-	// if (!info->shell)
-	info->shell = "/bin/bash";
+	if (check[C].on || check[C_ALT].on) {
+		get_cmd(info, ac, av);
+	} else {
+		ac == 1 ? info->file_name = strdup("typescript") :
+			get_name(info, ac, av);
+	}
+	info->shell = getenv("SHELL");
+	if (!info->shell)
+		info->shell = "/bin/sh";
 }
 
 int init_master(info_t *info)

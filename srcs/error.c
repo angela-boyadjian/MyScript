@@ -9,8 +9,9 @@
 
 int errors(int ac, char **av)
 {
-	if (check_flags(av, ac) == FAILURE) {
-		fprintf(stderr, "Invalid option\n");
+	if (check_flags(av, ac) == FAILURE && av[1][1]) {
+		fprintf(stderr, "script: invalid option -- '%c'\nTry ", av[1][1]);
+		fprintf(stderr, "'script --help' for more information.\n");
 		return (FAILURE);
 	}
 	return (SUCCESS);

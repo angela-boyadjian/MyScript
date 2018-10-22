@@ -17,19 +17,24 @@
 #define SUCCESS 0
 #define FAILURE 84
 #define ERROR -1
-#define NB_OPTIONS 5
-#define MSG1 "\nUsage:\n\tscript [options] [file]\n\nMake a typescript of a "
-#define MSG2 "terminal session.\n\nOptions:\n\t-a, --append"
-#define MSG3 ""
-#define MSG4 ""
-#define MSG5 ""
+#define NB_OPTIONS 10
+#define MSG1 "\nUsage:\n script [options] [file]\n\nMake a typescript of a "
+#define MSG2 "terminal session.\n\nOptions:\n -a, --append\t\t\tappend the "
+#define MSG3 "output\n -c, --command <command>\trun command rather than "
+#define MSG4 "interactive shell\n -q, --quiet\t\t\tbe quiet\n -h, --help\t\t"
+#define MSG5 "\tdisplay this help\n -V, --version\t\t\tdisplay version"
 
 enum flags {
 	H,
+	H_ALT,
 	A,
 	A_ALT,
 	Q,
-	V
+	Q_ALT,
+	V,
+	V_ALT,
+	C,
+	C_ALT
 };
 
 typedef struct info_s
@@ -37,6 +42,7 @@ typedef struct info_s
 	char *file_name;
 	char *line;
 	char *shell;
+	char *command;
 	FILE *file;
 	int fd;
 	ssize_t rc;
@@ -49,7 +55,7 @@ typedef struct info_s
 typedef struct options_s {
 	char *flag;
 	int on;
-	void (*ptr)(info_t *);
+	void (*ptr)(void);
 } options_t;
 
 //
@@ -67,10 +73,8 @@ int my_script(info_t *);
 void wait_for_data(info_t *);
 void write_status_to_file(info_t *, bool);
 void write_status_to_stdout(info_t *, bool);
-void option_a(info_t *info);
-void option_h(info_t *info);
-void option_q(info_t *info);
-void option_v(info_t *info);
+void option_h(void);
+void option_v(void);
 int check_flags(char **av, int ac);
 
 

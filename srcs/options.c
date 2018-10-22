@@ -6,25 +6,18 @@
 */
 
 #include <stdio.h>
+#include <stdlib.h>
 
 #include "my_script.h"
 
-void option_a(info_t *info)
+void option_h(void)
 {
-	write(1, "flag a\n", 8);
+	printf("%s%s%s%s%s\n", MSG1, MSG2, MSG3, MSG4, MSG5);
+	exit(SUCCESS);
 }
 
-void option_q(info_t *info)
+void option_v(void)
 {
-	write(1, "flag q\n", 8);
-}
-
-void option_h(info_t *info)
-{
-	write(1, "flag h\n", 8);
-}
-
-void option_v(info_t *info)
-{
-	write(1, "flag V\n", 8);
+	printf("script from util-linux 2.31.1\n");
+	exit(SUCCESS);
 }
